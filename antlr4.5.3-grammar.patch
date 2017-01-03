@@ -1,0 +1,11 @@
+--- antlr4-4.5.3/tool/src/org/antlr/v4/tool/ast/GrammarAST.java.orig
++++ antlr4-4.5.3/tool/src/org/antlr/v4/tool/ast/GrammarAST.java
+@@ -77,7 +77,7 @@
+     }
+ 
+ 	public GrammarAST[] getChildrenAsArray() {
+-		return children.toArray(new GrammarAST[children.size()]);
++		return (GrammarAST[]) children.toArray(new GrammarAST[children.size()]);
+ 	}
+ 
+ 	public List<GrammarAST> getNodesWithType(int ttype) {
