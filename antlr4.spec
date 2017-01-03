@@ -7,7 +7,7 @@ License:        BSD
 URL:            http://www.antlr.org/
 BuildArch:      noarch
 
-Source0:        https://github.com/antlr/antlr4/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/antlr/antlr4/archive/%{version}/%{name}-%{version}.tar.gz
 Patch0:         %{name}-4.5.3-grammar.patch
 
 BuildRequires:  maven-local
