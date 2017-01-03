@@ -1,0 +1,40 @@
+--- antlr4-4.5.3/tool/src/org/antlr/v4/tool/ast/GrammarAST.java.orig
++++ antlr4-4.5.3/tool/src/org/antlr/v4/tool/ast/GrammarAST.java
+@@ -77,7 +77,7 @@
+     }
+ 
+ 	public GrammarAST[] getChildrenAsArray() {
+-		return children.toArray(new GrammarAST[children.size()]);
++		return (GrammarAST[]) children.toArray(new GrammarAST[children.size()]);
+ 	}
+ 
+ 	public List<GrammarAST> getNodesWithType(int ttype) {
+--- antlr4-4.5.3/tool/src/org/antlr/v4/tool/GrammarTransformPipeline.java.orig
++++ antlr4-4.5.3/tool/src/org/antlr/v4/tool/GrammarTransformPipeline.java
+@@ -330,7 +330,7 @@
+ 		GrammarRootAST combinedAST = combinedGrammar.ast;
+ 		//tool.log("grammar", "before="+combinedAST.toStringTree());
+ 		GrammarASTAdaptor adaptor = new GrammarASTAdaptor(combinedAST.token.getInputStream());
+-		GrammarAST[] elements = combinedAST.getChildren().toArray(new GrammarAST[0]);
++		GrammarAST[] elements = (GrammarAST[]) combinedAST.getChildren().toArray(new GrammarAST[0]);
+ 
+ 		// MAKE A GRAMMAR ROOT and ID
+ 		String lexerName = combinedAST.getChild(0).getText()+"Lexer";
+@@ -346,7 +346,7 @@
+ 		if ( optionsRoot!=null && optionsRoot.getChildCount()!=0 ) {
+ 			GrammarAST lexerOptionsRoot = (GrammarAST)adaptor.dupNode(optionsRoot);
+ 			lexerAST.addChild(lexerOptionsRoot);
+-			GrammarAST[] options = optionsRoot.getChildren().toArray(new GrammarAST[0]);
++			GrammarAST[] options = (GrammarAST[]) optionsRoot.getChildren().toArray(new GrammarAST[0]);
+ 			for (GrammarAST o : options) {
+ 				String optionName = o.getChild(0).getText();
+ 				if ( Grammar.lexerOptions.contains(optionName) &&
+@@ -386,7 +386,7 @@
+ 		List<GrammarAST> rulesWeMoved = new ArrayList<GrammarAST>();
+ 		GrammarASTWithOptions[] rules;
+ 		if (combinedRulesRoot.getChildCount() > 0) {
+-			rules = combinedRulesRoot.getChildren().toArray(new GrammarASTWithOptions[0]);
++			rules = (GrammarASTWithOptions[]) combinedRulesRoot.getChildren().toArray(new GrammarASTWithOptions[0]);
+ 		}
+ 		else {
+ 			rules = new GrammarASTWithOptions[0];
