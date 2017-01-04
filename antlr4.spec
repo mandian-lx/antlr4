@@ -1,3 +1,12 @@
+#
+# NOTE: antlr4 requires itself to build. Boostrap option allow
+#       to build a minimal package useful to build the real one.
+#
+
+# _with    = default off
+# _without = default on
+%bcond_without bootstrap
+
 Name:           antlr4
 Version:        4.5.3
 Release:        1
@@ -13,9 +22,11 @@ Patch0:         %{name}-4.5.3-grammar.patch
 BuildRequires:  maven-local
 BuildRequires:  mvn(org.abego.treelayout:org.abego.treelayout.core)
 BuildRequires:  mvn(org.antlr:antlr3-maven-plugin)
+%if %without bootstrap
 BuildRequires:  mvn(org.antlr:antlr4-maven-plugin)
 BuildRequires:  mvn(org.antlr:antlr-runtime)
 BuildRequires:  mvn(org.antlr:ST4)
+%endif
 BuildRequires:  mvn(org.apache.felix:maven-bundle-plugin)
 BuildRequires:  mvn(org.apache.maven:maven-plugin-api)
 BuildRequires:  mvn(org.apache.maven:maven-project)
@@ -32,12 +43,17 @@ structured text or binary files.  It's widely used to build languages,
 tools, and frameworks. From a grammar, ANTLR generates a parser that
 can build and walk parse trees.
 
+%if %with bootstrap
+%files -f .mfiles-antlr4-runtime
+%else
 %files -f .mfiles-antlr4
+%endif
 %{_bindir}/%{name}
 %doc tool/MIGRATION.txt
 
 #----------------------------------------------------------------------------
 
+%if %without bootstrap
 %package runtime
 Summary:        ANTLR runtime
 
@@ -49,9 +65,11 @@ ANTLR.
 %doc README.md
 %doc CHANGES.txt
 %doc LICENSE.txt
+%endif
 
 #----------------------------------------------------------------------------
 
+%if %without bootstrap
 %package maven-plugin
 Summary:        ANTLR plugin for Apache Maven
 
@@ -60,9 +78,11 @@ This package provides plugin for Apache Maven which can be used to
 generate ANTLR parsers during build.
 
 %files maven-plugin -f .mfiles-antlr4-maven-plugin
+%endif
 
 #----------------------------------------------------------------------------
 
+%if %without bootstrap
 %package javadoc
 Summary:  Javadoc for %{name}
 
@@ -71,6 +91,7 @@ API documentation for %{name}.
 
 %files javadoc -f .mfiles-javadoc
 %doc LICENSE.txt
+%endif
 
 #----------------------------------------------------------------------------
 
@@ -89,13 +110,29 @@ find -name \*.jar -delete
 # Don't bundle dependencies
 %pom_remove_plugin :maven-shade-plugin tool
 
+%if %with bootstrap
+#pom_remove_dep org.antlr:antlr4-maven-plugin
+#pom_remove_dep org.antlr:antlr-runtime
+#pom_remove_dep org.antlr:ST4
+
+%pom_disable_module runtime/Java
+%pom_disable_module tool
+%endif
+
 # On ARM builder
 # Tests run: 3, Failures: 0, Errors: 1, Skipped: 1, Time elapsed: 32.898 sec <<< FAILURE!
 # - in org.antlr.v4.test.tool.TestPerformance
 # testExponentialInclude(org.antlr.v4.test.tool.TestPerformance)  Time elapsed: 20.027 sec  <<< ERROR!
 # org.junit.runners.model.TestTimedOutException: test timed out after 20000 milliseconds
-find -name TestPerformance.java -delete
+%pom_add_plugin :maven-surefire-plugin . "<configuration>
+	<excludes>
+		<exclude>**/TestPerformance.java</exclude>
+	</excludes>
+</configuration>"
 
+
+
+# Fix Jar name
 %mvn_package :%{name}-master %{name}-runtime
 
 %build
