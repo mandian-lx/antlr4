@@ -5,7 +5,7 @@
 
 # _with    = default off
 # _without = default on
-%bcond_without bootstrap
+%bcond_with bootstrap
 
 Name:           antlr4
 Version:        4.5.3
