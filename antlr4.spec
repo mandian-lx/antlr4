@@ -115,6 +115,7 @@ find -name \*.jar -delete
 #pom_remove_dep org.antlr:antlr-runtime
 #pom_remove_dep org.antlr:ST4
 
+%pom_disable_module antlr4-maven-plugin
 %pom_disable_module runtime/Java
 %pom_disable_module tool
 %endif
