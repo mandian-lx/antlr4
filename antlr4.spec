@@ -20,7 +20,7 @@ Source0:        https://github.com/antlr/antlr4/archive/%{version}/%{name}-%{ver
 Patch0:         %{name}-4.5.3-grammar.patch
 
 BuildRequires:  maven-local
-BuildRequires:  mvn(org.abego.treelayout:org.abego.treelayout.core)
+BuildRequires:  treelayout #mvn(org.abego.treelayout:org.abego.treelayout.core)
 BuildRequires:  mvn(org.antlr:antlr3-maven-plugin)
 %if %without bootstrap
 BuildRequires:  mvn(org.antlr:antlr4-maven-plugin)
