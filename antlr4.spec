@@ -25,8 +25,8 @@ BuildRequires:  mvn(org.antlr:antlr3-maven-plugin)
 %if %without bootstrap
 BuildRequires:  mvn(org.antlr:antlr4-maven-plugin)
 BuildRequires:  mvn(org.antlr:antlr-runtime)
-BuildRequires:  mvn(org.antlr:ST4)
 %endif
+BuildRequires:  mvn(org.antlr:ST4)
 BuildRequires:  mvn(org.apache.felix:maven-bundle-plugin)
 BuildRequires:  mvn(org.apache.maven:maven-plugin-api)
 BuildRequires:  mvn(org.apache.maven:maven-project)
